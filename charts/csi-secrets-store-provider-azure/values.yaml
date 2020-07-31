@@ -5,6 +5,11 @@ image:
 
 linux:
   nodeSelector: {}
+  tolerations:
+    - effect: NoSchedule
+      key: kubernetes.azure.com/scalesetpriority
+      operator: Equal
+      value: spot
   enabled: true
   resources:
     requests:
@@ -16,6 +21,7 @@ linux:
 
 windows:
   nodeSelector: {}
+  tolerations: []
   enabled: false
   resources:
     requests:
@@ -33,11 +39,18 @@ secrets-store-csi-driver:
   linux:
     enabled: true
     kubeletRootDir: /var/lib/kubelet
-    metricsAddr: ":8080"
+    metricsAddr: ":8180"
+    tolerations:
+    - effect: NoSchedule
+      key: kubernetes.azure.com/scalesetpriority
+      operator: Equal
+      value: spot
+
   windows:
     enabled: false
     kubeletRootDir: C:\var\lib\kubelet
     metricsAddr: ":8080"
+    tolerations: []
   logLevel:
     debug: true
 
